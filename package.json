@@ -1,6 +1,6 @@
 {
   "name": "com.suvorov.analytics",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "displayName": "Analytics",
   "description": "Game analytics with Facebook, Firebase, Appmetric, GameAnalytics providers",
   "unity": "2022.1",
