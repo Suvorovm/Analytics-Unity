@@ -10,9 +10,9 @@ namespace Analytics
     public class AnalyticsFacade
     {
         private readonly List<IAnalyticsAdapter> _analyticsAdapters;
-        private readonly PrivacyService _privacyService;
+        private readonly IPrivacyService _privacyService;
 
-        public AnalyticsFacade(List<IAnalyticsAdapter> analyticsAdapters, PrivacyService privacyService)
+        public AnalyticsFacade(List<IAnalyticsAdapter> analyticsAdapters, IPrivacyService privacyService)
         {
             _privacyService = privacyService;
             _analyticsAdapters = analyticsAdapters;

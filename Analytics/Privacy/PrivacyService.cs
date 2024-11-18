@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Analytics.Privacy
 {
-    public class PrivacyService
+    public class PrivacyService : IPrivacyService
     {
         private const string PERMISSION_RECEIVED = "privicyPermissionReceived";
 
