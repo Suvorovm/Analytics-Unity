@@ -70,6 +70,13 @@ namespace Analytics.Adapter
         public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
             string receipt)
         {
+            if (!_inited)
+            {
+#if !UNITY_EDITOR
+                Debug.LogWarning("Face book Not Inited");
+#endif
+                return;
+            }
             FB.LogPurchase(localizedPrice, icoCurrency);
         }
     }
