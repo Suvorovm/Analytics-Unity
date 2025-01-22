@@ -95,6 +95,14 @@ namespace Analytics.Adapter
         public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
             string receipt)
         {
+            
+            if (!_inited)
+            {
+#if !UNITY_EDITOR
+                Debug.LogWarning("Firebase Not Inited");
+#endif
+                return;
+            }
             FirebaseAnalytics.LogEvent(
                 FirebaseAnalytics.EventPurchase,
                 new Parameter[]
