@@ -50,6 +50,15 @@ namespace Analytics
             }
         }
 
+        public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
+            string receipt)
+        {
+            foreach (IAnalyticsAdapter analyticsAdapter in _analyticsAdapters)
+            {
+                analyticsAdapter.SendPurchaseEvent(localizedPrice, icoCurrency, productType, productId, receipt);
+            }
+        }
+
         public void SendEvent(string eventName, Dictionary<string, object> parameters)
         {
             foreach (IAnalyticsAdapter analyticsAdapter in _analyticsAdapters)

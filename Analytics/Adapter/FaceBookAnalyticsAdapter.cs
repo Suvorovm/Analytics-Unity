@@ -28,7 +28,6 @@ namespace Analytics.Adapter
                 await UniTask.CompletedTask;
             }
 #endif
-            
         }
 
         private void OnHideUnity(bool isunityshown)
@@ -66,7 +65,12 @@ namespace Analytics.Adapter
 
         public void AdRevenue(AnalyticsAdRevenue analyticsAdRevenue)
         {
-            
+        }
+
+        public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
+            string receipt)
+        {
+            FB.LogPurchase(localizedPrice, icoCurrency);
         }
     }
 }

@@ -10,5 +10,7 @@ namespace Analytics.Adapter
         void SendEvent(string eventName, Dictionary<string, object> parameters);
         void AdRevenue(AnalyticsAdRevenue analyticsAdRevenue);
 
+        void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId, string receipt);
+
     }
 }

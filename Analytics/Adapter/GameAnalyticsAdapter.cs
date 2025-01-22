@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-#if !UNITY_EDITOR
+//#if !UNITY_EDITOR
 using GameAnalyticsSDK;
 using UnityEngine;
-#endif
+
+//#endif
 
 
 namespace Analytics.Adapter
@@ -27,7 +28,6 @@ namespace Analytics.Adapter
         public void SendEvent(string eventName, Dictionary<string, object> parameters)
         {
 #if !UNITY_EDITOR
-
             string eventId = eventName;
 
             foreach (var param in parameters)
@@ -56,6 +56,20 @@ namespace Analytics.Adapter
             }
 
             GameAnalytics.NewAdEvent(GAAdAction.Show, adType, analyticsAdRevenue.AdSource, analyticsAdRevenue.AdPlacement);
+#endif
+        }
+
+        public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
+            string receipt)
+        {
+#if !UNITY_EDITOR
+            GameAnalytics.NewBusinessEvent(
+                icoCurrency,
+                (int) localizedPrice * 100, 
+                productType, 
+                productId, 
+                "InAppPurchase" 
+            );
 #endif
         }
     }

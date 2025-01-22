@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Analytics.Adapter
 {
-    
     public class AppMetricAdapter : IAnalyticsAdapter
     {
         private const string APP_METRIC_PLAYER_PREFS_KEY = "appMetrickFirstTime";
@@ -77,6 +76,23 @@ namespace Analytics.Adapter
             };
             adRevenue.Payload = payload;
             AppMetrica.ReportAdRevenue(adRevenue);
+        }
+
+        public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
+            string receipt)
+        {
+            Revenue revenue = new Revenue((long) (localizedPrice * 1000000), icoCurrency);
+            revenue.ProductID = productId;
+            Revenue.Receipt receiptObject = new Revenue.Receipt();
+            receiptObject.Data = receipt;
+            revenue.ReceiptValue = receiptObject;
+            revenue.Payload = ConvertDictionaryToJson(new Dictionary<string, object>()
+            {
+                { "productType", productType },
+                { "receipt", receipt }
+            });
+
+            AppMetrica.ReportRevenue(revenue);
         }
 
 

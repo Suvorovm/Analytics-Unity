@@ -92,6 +92,20 @@ namespace Analytics.Adapter
             FirebaseAnalytics.LogEvent(AD_ADDITIONAL_INFO_EVENT_NAME, fireBaseParams.ToArray());
         }
 
+        public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
+            string receipt)
+        {
+            FirebaseAnalytics.LogEvent(
+                FirebaseAnalytics.EventPurchase,
+                new Parameter[]
+                {
+                    new Parameter(FirebaseAnalytics.ParameterItemId, productId), 
+                    new Parameter(FirebaseAnalytics.ParameterItemName, productId), 
+                    new Parameter(FirebaseAnalytics.ParameterCurrency, icoCurrency), 
+                    new Parameter(FirebaseAnalytics.ParameterValue, (double) localizedPrice), 
+                });
+        }
+
         private Parameter CreateParam(string paramName, object param)
         {
             if (param == null)
