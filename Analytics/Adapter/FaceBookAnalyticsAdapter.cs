@@ -7,6 +7,7 @@ namespace Analytics.Adapter
 {
     public class FaceBookAnalyticsAdapter : IAnalyticsAdapter
     {
+        private const string AD_IMPRESSION = "AdImpression";
         private bool _inited;
         private bool _isFaceBookGetAnyAnswer;
 
@@ -65,6 +66,16 @@ namespace Analytics.Adapter
 
         public void AdRevenue(AnalyticsAdRevenue analyticsAdRevenue)
         {
+            if (!_inited)
+            {
+#if !UNITY_EDITOR
+                Debug.LogWarning("Facebook Not Inited");
+#endif
+                return;
+            }
+            var param = new Dictionary<string, object>();
+            param[AppEventParameterName.Currency] = "USD";
+            FB.LogAppEvent(AD_IMPRESSION, analyticsAdRevenue.AdRevenueValue, param);
         }
 
         public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
@@ -73,7 +84,7 @@ namespace Analytics.Adapter
             if (!_inited)
             {
 #if !UNITY_EDITOR
-                Debug.LogWarning("Face book Not Inited");
+                Debug.LogWarning("Facebook Not Inited");
 #endif
                 return;
             }
