@@ -75,7 +75,7 @@ namespace Analytics.Adapter
             }
             var param = new Dictionary<string, object>();
             param[AppEventParameterName.Currency] = "USD";
-            FB.LogAppEvent(AD_IMPRESSION, analyticsAdRevenue.AdRevenueValue, param);
+            FB.LogAppEvent(AD_IMPRESSION, (float) analyticsAdRevenue.AdRevenueValue, param);
         }
 
         public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
