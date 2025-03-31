@@ -9,6 +9,7 @@ namespace Analytics.Adapter
     public class AppMetricAdapter : IAnalyticsAdapter
     {
         private const string APP_METRIC_PLAYER_PREFS_KEY = "appMetrickFirstTime";
+        private const string PURCHASE_CUSTOM_EVENT = "purchase_in_app";
 
         private readonly string _apiKey;
 
@@ -93,6 +94,13 @@ namespace Analytics.Adapter
             });
 
             AppMetrica.ReportRevenue(revenue);
+            SendEvent(PURCHASE_CUSTOM_EVENT, new Dictionary<string, object>()
+            {
+                { "productId",  productId },
+                { "productType", productType },
+                { "localPrice", localizedPrice },
+                { "icoCurrency", icoCurrency }
+            });
         }
 
 
