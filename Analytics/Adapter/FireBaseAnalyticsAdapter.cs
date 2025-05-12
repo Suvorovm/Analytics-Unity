@@ -22,7 +22,7 @@ namespace Analytics.Adapter
         private const string AD_PRECISION = "ad_precision";
         private const string AD_LIFETIME_REVENUE = "ad_liftime_revenue";
         private const string AD_VALUE = "value";
-        
+        private const string CUSTOM_PURCHASE_EVENT_NAME = "custom_purchase";
         
         private bool _inited;
         private bool _anyAnswerFromFireBase;
@@ -104,7 +104,7 @@ namespace Analytics.Adapter
                 return;
             }
             FirebaseAnalytics.LogEvent(
-                FirebaseAnalytics.EventPurchase,
+                CUSTOM_PURCHASE_EVENT_NAME,
                 new Parameter[]
                 {
                     new Parameter(FirebaseAnalytics.ParameterItemId, productId), 
