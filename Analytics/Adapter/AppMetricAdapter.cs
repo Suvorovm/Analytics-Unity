@@ -3,6 +3,7 @@ using System.Text;
 using Cysharp.Threading.Tasks;
 using Io.AppMetrica;
 using UnityEngine;
+using System;
 
 namespace Analytics.Adapter
 {
@@ -79,21 +80,48 @@ namespace Analytics.Adapter
             AppMetrica.ReportAdRevenue(adRevenue);
         }
 
-        public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
-            string receipt)
+        public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId, string receiptRaw)
         {
-            Revenue revenue = new Revenue((long) (localizedPrice * 1000000), icoCurrency);
-            revenue.ProductID = productId;
-            Revenue.Receipt receiptObject = new Revenue.Receipt();
-            receiptObject.Data = receipt;
-            revenue.ReceiptValue = receiptObject;
-            revenue.Payload = ConvertDictionaryToJson(new Dictionary<string, object>()
+            Revenue revenue = new Revenue((long)(localizedPrice * 1000000), icoCurrency)
             {
-                { "productType", productType },
-                { "receipt", receipt }
-            });
+                ProductID = productId,
+            };
 
+            if (!string.IsNullOrEmpty(receiptRaw))
+            {
+                try
+                {
+                    Receipt parsedReceipt = JsonUtility.FromJson<Receipt>(receiptRaw);
+                    Revenue.Receipt receiptObject = new Revenue.Receipt();
+
+#if UNITY_ANDROID
+                    PayloadAndroid payloadAndroid = JsonUtility.FromJson<PayloadAndroid>(parsedReceipt.Payload);
+                    receiptObject.Data = payloadAndroid.Json;
+                    receiptObject.Signature = payloadAndroid.Signature;
+#elif UNITY_IPHONE
+            receiptObject.Data = parsedReceipt.Payload;
+            receiptObject.TransactionID = parsedReceipt.TransactionID;
+#endif
+
+                    revenue.ReceiptValue = receiptObject;
+
+                    // Добавим дополнительную инфу в payload
+                    revenue.Payload = ConvertDictionaryToJson(new Dictionary<string, object>()
+                    {
+                        { "productType", productType },
+                        { "receipt", receiptRaw }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"[AppMetrica] Ошибка парсинга чека: {ex.Message}");
+                }
+            }
+
+            // Отправка дохода
             AppMetrica.ReportRevenue(revenue);
+
+            // Отправка кастомного ивента
             SendEvent(PURCHASE_CUSTOM_EVENT, new Dictionary<string, object>()
             {
                 { "productId",  productId },
@@ -102,6 +130,7 @@ namespace Analytics.Adapter
                 { "icoCurrency", icoCurrency }
             });
         }
+
 
 
         private string ConvertDictionaryToJson(Dictionary<string, object> parameters)
@@ -123,6 +152,20 @@ namespace Analytics.Adapter
             jsonBuilder.Append("\n}");
 
             return jsonBuilder.ToString();
+        }
+        
+        [System.Serializable]
+        public struct Receipt {
+            public string Store;
+            public string TransactionID;
+            public string Payload;
+        }
+
+// Additional information about the IAP for Android.
+        [System.Serializable]
+        public struct PayloadAndroid {
+            public string Json;
+            public string Signature;
         }
     }
 }
