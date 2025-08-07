@@ -23,7 +23,7 @@ namespace Analytics.Adapter
         private const string AD_LIFETIME_REVENUE = "ad_liftime_revenue";
         private const string AD_VALUE = "value";
         private const string CUSTOM_PURCHASE_EVENT_NAME = "custom_purchase";
-        
+
         private bool _inited;
         private bool _anyAnswerFromFireBase;
 
@@ -87,15 +87,14 @@ namespace Analytics.Adapter
                 new Parameter(AD_VALUE, analyticsAdRevenue.AdRevenueValue),
                 new Parameter(AD_REVENUE, analyticsAdRevenue.AdRevenueValue),
                 new Parameter("currency", "USD"), //required
-                
+
             };
             FirebaseAnalytics.LogEvent(AD_ADDITIONAL_INFO_EVENT_NAME, fireBaseParams.ToArray());
         }
 
-        public void SendPurchaseEvent(decimal localizedPrice, string icoCurrency, string productType, string productId,
+        public void SendPurchaseEvent(decimal localizedPrice, string isoCurrency, string productType, string productId,
             string receipt)
         {
-            
             if (!_inited)
             {
 #if !UNITY_EDITOR
@@ -103,16 +102,25 @@ namespace Analytics.Adapter
 #endif
                 return;
             }
+
+            var price = (double) localizedPrice;
+
+
             FirebaseAnalytics.LogEvent(
-                CUSTOM_PURCHASE_EVENT_NAME,
+                FirebaseAnalytics.EventPurchase,
                 new Parameter[]
                 {
-                    new Parameter(FirebaseAnalytics.ParameterItemId, productId), 
-                    new Parameter(FirebaseAnalytics.ParameterItemName, productId), 
-                    new Parameter(FirebaseAnalytics.ParameterCurrency, icoCurrency), 
-                    new Parameter(FirebaseAnalytics.ParameterValue, (double) localizedPrice), 
-                });
+                    new Parameter("transaction_id", receipt ?? System.Guid.NewGuid().ToString()),
+                    new Parameter("currency", isoCurrency),
+                    new Parameter("value", price),
+                    new Parameter("item_id", productId),
+                    new Parameter("item_name", productId),
+                    new Parameter("item_category", productType),
+                    new Parameter("price", price)
+                }
+            );
         }
+
 
         private Parameter CreateParam(string paramName, object param)
         {
