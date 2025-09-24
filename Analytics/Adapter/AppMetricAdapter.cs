@@ -167,5 +167,10 @@ namespace Analytics.Adapter
             public string Json;
             public string Signature;
         }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

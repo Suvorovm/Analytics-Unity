@@ -72,5 +72,9 @@ namespace Analytics.Adapter
             );
 #endif
         }
+        public void Dispose()
+        {
+            
+        }
     }
 }

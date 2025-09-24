@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Analytics.Adapter;
+﻿using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 namespace Analytics.Adapter
 {
-    public interface IAnalyticsAdapter
+    public interface IAnalyticsAdapter : IDisposable
     {
         UniTask Init();
         void SendEvent(string eventName, Dictionary<string, object> parameters);

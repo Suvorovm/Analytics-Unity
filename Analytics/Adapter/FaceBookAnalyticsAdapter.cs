@@ -90,5 +90,9 @@ namespace Analytics.Adapter
             }
             FB.LogPurchase(localizedPrice, icoCurrency);
         }
+        public void Dispose()
+        {
+            
+        }
     }
 }

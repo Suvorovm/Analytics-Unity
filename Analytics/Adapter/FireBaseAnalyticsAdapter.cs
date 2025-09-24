@@ -133,5 +133,9 @@ namespace Analytics.Adapter
 
             return new Parameter(paramName, param.ToString());
         }
+        public void Dispose()
+        {
+            
+        }
     }
 }

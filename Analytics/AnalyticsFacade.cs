@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Analytics
 {
-    public class AnalyticsFacade
+    public class AnalyticsFacade : IDisposable
     {
         private readonly List<IAnalyticsAdapter> _analyticsAdapters;
         private readonly IPrivacyService _privacyService;
@@ -79,6 +79,10 @@ namespace Analytics
             }
 
             Debug.Log($"Params : {collectedParamsToString}");
+        }
+        public void Dispose()
+        {
+            
         }
     }
 }
