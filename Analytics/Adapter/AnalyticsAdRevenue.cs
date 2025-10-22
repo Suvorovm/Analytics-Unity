@@ -1,4 +1,6 @@
-﻿namespace Analytics.Adapter
+﻿using System.Collections.Generic;
+
+namespace Analytics.Adapter
 {
     public struct AnalyticsAdRevenue
     {
