@@ -10,5 +10,6 @@
         public string AdPrecision;
         public double LifetimeRevenue;
         public double AdRevenueValue;
+        public Dictionary<string, object> SourceData;
     }
 }
