@@ -12,7 +12,7 @@ namespace Analytics.Adapter
 {
     public class FireBaseAnalyticsAdapter : IAnalyticsAdapter
     {
-        private const string AD_ADDITIONAL_INFO_EVENT_NAME = "ad_iron_source_additional_info";
+        private const string AD_ADDITIONAL_INFO_EVENT_NAME = "ad_additional_info";
         private const string AD_SOURCE = "ad_source";
         private const string AD_UNIT_NAME = "ad_unit_name";
         private const string AD_FORMAT = "ad_unit_format";
